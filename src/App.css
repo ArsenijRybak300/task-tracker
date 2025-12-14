@@ -73,14 +73,9 @@ background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
   font-weight: bold;
   display: block;
 }
-
-.stat-number.todo { color: #ee2f2f; }
-.stat-number.inProgress { color: #2834e9; }
-.stat-number.done { color: #2fbd1c; }
-
 /* Форма */
 .task-form {
-  background: white;
+  background: rgb(245, 254, 255);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 30px;
@@ -149,7 +144,7 @@ background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
 }
 
 .btn-primary {
-  background: #838383;
+  background: #147825b8;
   color: white;
 }
 
@@ -169,13 +164,13 @@ background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
 }
 
 .btn-edit {
-  background: #ffc107;
+  background: #ffe600;
   color: white;
   padding: 8px 12px;
 }
 
 .btn-delete {
-  background: #dc3545;
+  background: #ff0019;
   color: white;
   padding: 8px 12px;
 }
@@ -191,24 +186,21 @@ background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
 
 .filter-btn {
   padding: 10px 20px;
-  border: 2px solid #e1e5e9;
-  background: white;
+  background: rgb(245, 254, 255);
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 500;
 }
 
-.filter-btn.active,
+
 .filter-btn:hover {
-  background: #838383;
-  color: white;
-  border-color: #838383;
+  background: #add3a1;
 }
 
 /* Список задач */
 .tasks-list h2 {
-  color: white;
+  color: rgb(245, 254, 255);
   margin-bottom: 20px;
 }
 
@@ -232,13 +224,13 @@ background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
   box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
-.task-card.high { border-left-color: #dc3545; }
-.task-card.medium { border-left-color: #ffc107; }
-.task-card.low { border-left-color: #4859f0; }
+.task-card.high { border-left-color: #ff0000; }
+.task-card.medium { border-left-color: #2b00ff; }
+.task-card.low { border-left-color: #0dff00; }
 
-.task-card.todo { background: linear-gradient(90deg, #fff 80%, #e2c4c4 100%); }
-.task-card.inProgress { background: linear-gradient(90deg, #fff 80%, #b5c2da 100%); }
-.task-card.done { background: linear-gradient(90deg, #fff 80%, #a8d1a8 100%); }
+.task-card.todo { background: linear-gradient(90deg, rgb(245, 254, 255) 80%, #ff0000 200%); }
+.task-card.inProgress { background: linear-gradient(90deg, rgb(245, 254, 255) 80%, #0008ff 200%); }
+.task-card.done { background: linear-gradient(90deg, rgb(245, 254, 255) 80%, #00ff00 200%); }
 
 .task-header {
   display: flex;
@@ -261,9 +253,9 @@ background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
   white-space: nowrap;
 }
 
-.priority-badge.high { background: #ffe6e6; color: #dc3545; }
-.priority-badge.medium { background: #fff3cd; color: #856404; }
-.priority-badge.low { background: #92adf8; color: #012b42; }
+.priority-badge.high { background: rgba(255, 0, 0, 0.299); color: #610c14; }
+.priority-badge.medium { background: rgba(0, 30, 255, 0.299); color: #081145; }
+.priority-badge.low { background: rgba(9, 255, 0, 0.299); color: #1c510f; }
 
 .task-description {
   color: #666;

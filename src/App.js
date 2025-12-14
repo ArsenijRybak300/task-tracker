@@ -7,7 +7,7 @@ function App() {
   const [editingTask, setEditingTask] = useState(null);
   const [filter, setFilter] = useState('all');
 
-  // Загрузка задач из localStorage при монтировании
+  // Загрузка задач из localStorage
   useEffect(() => {
     const savedTasks = localStorage.getItem('tasks');
     if (savedTasks) {
@@ -15,12 +15,12 @@ function App() {
     }
   }, []);
 
-  // Сохранение задач в localStorage при изменении
+  // Сохранение задач в localStorage
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  // Создание задачи
+  // Добавление задачи
   const addTask = () => {
     if (newTask.title.trim() === '') return;
     
@@ -37,7 +37,7 @@ function App() {
     setNewTask({ title: '', description: '', priority: 'medium', status: 'todo' });
   };
 
-  // Чтение задач с фильтрацией
+  // Фильтрация задач
   const getFilteredTasks = () => {
     switch (filter) {
       case 'todo':
@@ -67,7 +67,7 @@ function App() {
     setEditingTask(null);
   };
 
-  // Удаление задачи (DELETE)
+  // Удаление задачи
   const deleteTask = (id) => {
     setTasks(tasks.filter(task => task.id !== id));
   };
@@ -79,17 +79,6 @@ function App() {
     ));
   };
 
-  // Статистика
-  const getStats = () => {
-    const total = tasks.length;
-    const todo = tasks.filter(task => task.status === 'todo').length;
-    const inProgress = tasks.filter(task => task.status === 'inProgress').length;
-    const done = tasks.filter(task => task.status === 'done').length;
-    
-    return { total, todo, inProgress, done };
-  };
-
-  const stats = getStats();
   const filteredTasks = getFilteredTasks();
 
   return (
@@ -99,100 +88,80 @@ function App() {
       </header>
 
       <div className="container">
-        {/* Статистика */}
-        <div className="stats">
-          <div className="stat-card">
-            <h3>Всего</h3>
-            <span className="stat-number">{stats.total}</span>
+        {/* Форма добавления/редактирования */}
+        <div className="task-form">
+          <h2>{editingTask ? 'Редактировать задачу' : 'Добавить новую задачу'}</h2>
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Название задачи*"
+              value={editingTask ? editingTask.title : newTask.title}
+              onChange={(e) => editingTask 
+                ? setEditingTask({...editingTask, title: e.target.value})
+                : setNewTask({...newTask, title: e.target.value})
+              }
+            />
           </div>
-          <div className="stat-card">
-            <h3>К выполнению</h3>
-            <span className="stat-number todo">{stats.todo}</span>
+          <div className="form-group">
+            <textarea
+              placeholder="Описание задачи"
+              value={editingTask ? editingTask.description : newTask.description}
+              onChange={(e) => editingTask
+                ? setEditingTask({...editingTask, description: e.target.value})
+                : setNewTask({...newTask, description: e.target.value})
+              }
+            />
           </div>
-          <div className="stat-card">
-            <h3>В работе</h3>
-            <span className="stat-number inProgress">{stats.inProgress}</span>
+          
+          <div className="form-row">
+            <div className="form-column">
+              <label className="form-label">Выберите приоритет:</label>
+              <select
+                value={editingTask ? editingTask.priority : newTask.priority}
+                onChange={(e) => editingTask
+                  ? setEditingTask({...editingTask, priority: e.target.value})
+                  : setNewTask({...newTask, priority: e.target.value})
+                }
+              >
+                <option value="low">Низкий</option>
+                <option value="medium">Средний</option>
+                <option value="high">Высокий</option>
+              </select>
+            </div>
+            
+            <div className="form-column">
+              <label className="form-label">Выберите статус:</label>
+              <select
+                value={editingTask ? editingTask.status : newTask.status}
+                onChange={(e) => editingTask
+                  ? setEditingTask({...editingTask, status: e.target.value})
+                  : setNewTask({...newTask, status: e.target.value})
+                }
+              >
+                <option value="todo">К выполнению</option>
+                <option value="inProgress">В работе</option>
+                <option value="done">Выполнено</option>
+              </select>
+            </div>
           </div>
-          <div className="stat-card">
-            <h3>Выполнено</h3>
-            <span className="stat-number done">{stats.done}</span>
+          
+          <div className="form-actions">
+            {editingTask ? (
+              <>
+                <button className="btn btn-primary" onClick={updateTask}>
+                  Сохранить
+                </button>
+                <button className="btn btn-secondary" onClick={() => setEditingTask(null)}>
+                  Отмена
+                </button>
+              </>
+            ) : (
+              <button className="btn btn-primary" onClick={addTask}>
+                Добавить задачу
+              </button>
+            )}
           </div>
         </div>
-
-{/* Форма добавления/редактирования */}
-<div className="task-form">
-  <h2>{editingTask ? 'Редактировать задачу' : 'Добавить новую задачу'}</h2>
-  <div className="form-group">
-    <input
-      type="text"
-      placeholder="Название задачи*"
-      value={editingTask ? editingTask.title : newTask.title}
-      onChange={(e) => editingTask 
-        ? setEditingTask({...editingTask, title: e.target.value})
-        : setNewTask({...newTask, title: e.target.value})
-      }
-    />
-  </div>
-  <div className="form-group">
-    <textarea
-      placeholder="Описание задачи"
-      value={editingTask ? editingTask.description : newTask.description}
-      onChange={(e) => editingTask
-        ? setEditingTask({...editingTask, description: e.target.value})
-        : setNewTask({...newTask, description: e.target.value})
-      }
-    />
-  </div>
-  
-  <div className="form-row">
-    <div className="form-column">
-      <label className="form-label">Выберите приоритет:</label>
-      <select
-        value={editingTask ? editingTask.priority : newTask.priority}
-        onChange={(e) => editingTask
-          ? setEditingTask({...editingTask, priority: e.target.value})
-          : setNewTask({...newTask, priority: e.target.value})
-        }
-      >
-        <option value="low">Низкий</option>
-        <option value="medium">Средний</option>
-        <option value="high">Высокий</option>
-      </select>
-    </div>
-    
-    <div className="form-column">
-      <label className="form-label">Выберите статус:</label>
-      <select
-        value={editingTask ? editingTask.status : newTask.status}
-        onChange={(e) => editingTask
-          ? setEditingTask({...editingTask, status: e.target.value})
-          : setNewTask({...newTask, status: e.target.value})
-        }
-      >
-        <option value="todo">К выполнению</option>
-        <option value="inProgress">В работе</option>
-        <option value="done">Выполнено</option>
-      </select>
-    </div>
-  </div>
-  
-  <div className="form-actions">
-    {editingTask ? (
-      <>
-        <button className="btn btn-primary" onClick={updateTask}>
-        Сохранить
-        </button>
-        <button className="btn btn-secondary" onClick={() => setEditingTask(null)}>
-        Отмена
-        </button>
-      </>
-    ) : (
-      <button className="btn btn-primary" onClick={addTask}>
-        Добавить задачу
-      </button>
-    )}
-  </div>
-</div>
 
         {/* Фильтры */}
         <div className="filters">
@@ -233,26 +202,28 @@ function App() {
             <div className="tasks-grid">
               {filteredTasks.map(task => (
                 <div key={task.id} className={`task-card ${task.priority} ${task.status}`}>
-                  <div className="task-header">
-                    <h3>{task.title}</h3>
-                    <span className={`priority-badge ${task.priority}`}>
-                      {task.priority === 'high' ? 'Высокий' : 
-                       task.priority === 'medium' ? 'Средний' : 'Низкий'}
-                    </span>
-                  </div>
-                  
-                  {task.description && (
-                    <p className="task-description">{task.description}</p>
-                  )}
-                  
-                  <div className="task-meta">
-                    <span className="task-date">
-                      📅 {new Date(task.createdAt).toLocaleDateString()}
-                    </span>
-                    <span className={`status-badge ${task.status}`}>
-                      {task.status === 'todo' ? 'К выполнению' :
-                       task.status === 'inProgress' ? 'В работе' : 'Выполнено'}
-                    </span>
+                  <div className="task-content">
+                    <div className="task-header">
+                      <h3>{task.title}</h3>
+                      <span className={`priority-badge ${task.priority}`}>
+                        {task.priority === 'high' ? 'Высокий' : 
+                         task.priority === 'medium' ? 'Средний' : 'Низкий'}
+                      </span>
+                    </div>
+                    
+                    {task.description && (
+                      <p className="task-description">{task.description}</p>
+                    )}
+                    
+                    <div className="task-meta">
+                      <span className="task-date">
+                        {new Date(task.createdAt).toLocaleDateString()}
+                      </span>
+                      <span className={`status-badge ${task.status}`}>
+                        {task.status === 'todo' ? 'К выполнению' :
+                         task.status === 'inProgress' ? 'В работе' : 'Выполнено'}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="task-actions">
